@@ -12,7 +12,7 @@ all = []
 
 for item in r:
     new_group = ''
-    if(item[-1] == 'Asthma' or item[-1] == 'Issues Breathing' or item[-1] == 'Respiratory Condition'):
+    if(item[-1] == 'Asthma' or item[-1] == 'Issues Breathing' or item[-1] == 'Respiratory Condition' or item[-1] == 'Medical Care Error' or item == 'Military Situation'):
         new_group = 'Issues Breathing'
     elif(item[-1] == 'Motor Vehicle Accident' or item[-1] == 'Accident'):
         new_group = 'Accident'
