@@ -1,5 +1,6 @@
 from flask_api import FlaskAPI
-from flask import request
+from flask import request, Response, make_response
+import flask
 import pickle
 import sklearn
 import pandas
@@ -11,13 +12,14 @@ app = FlaskAPI("deathCauses")
 
 @app.route('/deaths', methods=['GET', 'POST'])
 def deathCauses():
-    if request.method == 'GET':
+    resp = []
+    if request.method == 'POST':
         model = []
         with open('deaths_model', 'rb') as f:
             model = pickle.load(f)
         with open('columns', 'rb') as f:
             columns = pickle.load(f)
-        # print(columns)
+        
         predict_data_cat = [['Black', 'M', 'Single']]
         #['Black', 'M', 'Single'], ['White', 'M', 'Widowed'], ['Hawaiian', 'F', 'Married']
         #[20, 6], [72, 3], [36, 5]
@@ -35,8 +37,17 @@ def deathCauses():
         query = pandas.concat([s, query], axis=1, sort=False)
 
         Y = model.predict(query)
-        print(Y)
-    return {'cause_of_death': Y[0]}
+
+        df = pandas.read_csv('percentage_predict.csv', low_memory=False)
+        group = df[df['Parent_Group'] == Y[0]]
+        group = group.values.tolist()
+        deathList = []
+        for val in group:
+            g = {val[0]: val[2]}
+            deathList.append(g)
+        resp = make_response({'cause_of_death': Y[0], 'values': deathList})
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='localhost')

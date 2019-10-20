@@ -1,0 +1,39 @@
+Group,Parent_Group,Percentage
+Accident,Other,10.73
+Asthma,Issues Breathing,59.32
+Birth Condition,Congenital Anomalies,2.33
+Bladder Condition,Organ Failure,2.72
+Cancer,Cancer,100.0
+Congenital Anomalies,Congenital Anomalies,2.35
+Diabetes,Organ Failure,37.32
+Diseases of the nervous system,Congenital Anomalies,53.79
+Disturbance of Behavior or Senses,Congenital Anomalies,0.03
+Drug Use,Organ Failure,22.79
+Eye Condition,Organ Failure,0.03
+Fall,Other,19.66
+Female Reproductive Condition,Organ Failure,0.11
+Fire,Other,1.78
+HIV/AIDS,Other,9.42
+Heart Disease,Heart Disease,84.52
+Heat Exposure,Other,0.05
+Infection,Other,27.2
+Issues Breathing,Issues Breathing,1.29
+Issues with Movement,Congenital Anomalies,0.04
+Kidney Condition,Organ Failure,13.11
+Liver Disease,Organ Failure,18.85
+Male Reproductive Condition,Organ Failure,0.15
+Medical Care Error,Other,2.38
+Mental or Behavioral,Congenital Anomalies,38.98
+Military Situation,Other,0.11
+Motor Vehicle Accident,Other,19.04
+Muscle/Bone Condition,Organ Failure,3.32
+Natural Disaster,Other,1.12
+Other,Other,3.83
+Pregnancy Related,Organ Failure,0.32
+Respiratory Condition,Issues Breathing,39.39
+Seizures,Congenital Anomalies,2.48
+Skin Condition,Organ Failure,1.1
+Stomach or Bowel Issues,Organ Failure,0.17
+Stroke,Heart Disease,15.48
+Unkown cause,Other,4.69
+Urinary Abdominal Issues,Organ Failure,0.01

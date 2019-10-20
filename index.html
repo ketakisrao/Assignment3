@@ -27,14 +27,18 @@
         <h3>Deaths by Drugs by age</h3>
         <div id="drugs"></div>
     </div>
+
+
+    <div class="graph-box">
+        <h3>Deaths Response</h3>
+        <div id="response"></div>
+    </div>
     <script>
         makeCharts = function (data) {
 
             var cancerData = data.filter(d => d.group == 'Cancer');
             var motorVehicleAccidentData = data.filter(d => d.group == 'Motor Vehicle Accident');
             var drugUseData = data.filter(d => d.group == 'Drug Use');
-            // var drugUse = data.filter(d => d.group == 'Drug Use');
-            // console.log(cancerData.length);
             var records = {
                 $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
                 description: 'A simple bar chart with embedded data.',
@@ -77,6 +81,47 @@
             vegaEmbed('#mva', records);
             records.data.values = drugUseData;
             vegaEmbed('#drugs', records);
+        }
+
+        makeUncertaintyChart = function(data){
+            var records = {
+                $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+                description: 'A simple bar chart with embedded data.',
+                data: {
+                    values: data.values
+                },
+                mark: {
+                    type: "bar",
+                    tooltip: true
+                },
+                encoding: {
+                    x: {
+                        field: "Age",
+                        type: "nominal"
+                    },
+                    y: {
+                        aggregate: "count",
+                        type: "quantitative"
+                    }
+                },
+                height: 300,
+                width: 800
+
+            };
+
+
+            vegaEmbed('#response', records);
+        }
+
+        const Http = new XMLHttpRequest();
+        const url = 'http://localhost:5000/deaths';
+        Http.open("POST", url);
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+            var response = JSON.parse(Http.responseText);
+            console.log(response);
+            makeUncertaintyChart(response);
         }
 
         d3.csv('death_causes.csv')
