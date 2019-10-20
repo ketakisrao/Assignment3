@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Deaths</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@5"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.12.0/d3.min.js"></script>
+</head>
+
+<body>
+    <h2>Deaths</h2>
+    <div class="graph-box">
+        <h3>All Deaths by age</h3>
+        <div id="vis"></div>
+    </div>
+    <div class="graph-box">
+        <h3>Deaths by Cancer by age</h3>
+        <div id="cancer"></div>
+    </div>
+    <div class="graph-box">
+        <h3>Deaths by Motor Vehicle Accident by age</h3>
+        <div id="mva"></div>
+    </div>
+    <div class="graph-box">
+        <h3>Deaths by Drugs by age</h3>
+        <div id="drugs"></div>
+    </div>
+    <script>
+        makeCharts = function (data) {
+
+            var cancerData = data.filter(d => d.group == 'Cancer');
+            var motorVehicleAccidentData = data.filter(d => d.group == 'Motor Vehicle Accident');
+            var drugUseData = data.filter(d => d.group == 'Drug Use');
+            // var drugUse = data.filter(d => d.group == 'Drug Use');
+            // console.log(cancerData.length);
+            var records = {
+                $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+                description: 'A simple bar chart with embedded data.',
+                transform: [
+                    {
+                        bin: { step: 5 },
+                        field: "age",
+                        as: "Age"
+                    }
+                ],
+                data: {
+                    values: data
+                },
+                mark: {
+                    type: "bar",
+                    tooltip: true
+                },
+                encoding: {
+                    x: {
+                        bin: { binned: true, step: 5 },
+                        field: "Age",
+                        type: "quantitative",
+                        title: "Age"
+                    },
+                    x2: { field: "Age_end" },
+                    y: {
+                        aggregate: "count",
+                        type: "quantitative"
+                    }
+                },
+                height: 300,
+                width: 800
+
+            };
+
+            vegaEmbed('#vis', records);
+            records.data.values = cancerData;
+            vegaEmbed('#cancer', records);
+            records.data.values = motorVehicleAccidentData;
+            vegaEmbed('#mva', records);
+            records.data.values = drugUseData;
+            vegaEmbed('#drugs', records);
+        }
+
+        d3.csv('death_causes.csv')
+            .then(makeCharts);
+    </script>
+</body>
+
+</html>
