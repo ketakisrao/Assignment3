@@ -39,7 +39,7 @@ makeCharts = function (data) {
     };
 
     var customChart = {
-        $schema: "https://vega.github.io/schema/vega-lite/v4.json",
+        $schema: "https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json",
         data: { values: data },
         transform: [
             { filter: "datum.group == 'Heart Disease' || datum.group == 'Cancer' || datum.group == 'Asthma' || datum.group == 'Drug Use'" },

@@ -2,7 +2,7 @@ from flask_api import FlaskAPI
 from flask import request, Response, make_response
 import flask
 import pickle
-import sklearn
+# import sklearn
 import pandas
 from sklearn import preprocessing
 import json
