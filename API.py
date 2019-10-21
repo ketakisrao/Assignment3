@@ -5,6 +5,7 @@ import pickle
 import sklearn
 import pandas
 from sklearn import preprocessing
+import json
 
 
 
@@ -20,10 +21,10 @@ def deathCauses():
         with open('columns', 'rb') as f:
             columns = pickle.load(f)
         
-        predict_data_cat = [['Black', 'M', 'Single']]
+        predict_data_cat = [request.form['cat'].split(',')]
         #['Black', 'M', 'Single'], ['White', 'M', 'Widowed'], ['Hawaiian', 'F', 'Married']
         #[20, 6], [72, 3], [36, 5]
-        predict_data_num = [[20, 6]]
+        predict_data_num = [request.form['num'].split(',')]
         features_num = ['age', 'education']
 
 
@@ -43,8 +44,7 @@ def deathCauses():
         group = group.values.tolist()
         deathList = []
         for val in group:
-            g = {val[0]: val[2]}
-            deathList.append(g)
+            deathList.append({'name': val[0], 'percentage': val[2]})
         resp = make_response({'cause_of_death': Y[0], 'values': deathList})
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp

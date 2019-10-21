@@ -41,7 +41,6 @@
             var drugUseData = data.filter(d => d.group == 'Drug Use');
             var records = {
                 $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
-                description: 'A simple bar chart with embedded data.',
                 transform: [
                     {
                         bin: { step: 5 },
@@ -86,7 +85,6 @@
         makeUncertaintyChart = function(data){
             var records = {
                 $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
-                description: 'A simple bar chart with embedded data.',
                 data: {
                     values: data.values
                 },
@@ -95,32 +93,35 @@
                     tooltip: true
                 },
                 encoding: {
-                    x: {
-                        field: "Age",
-                        type: "nominal"
-                    },
                     y: {
-                        aggregate: "count",
+                        field: "percentage",
                         type: "quantitative"
+                    },
+                    x: {
+                        field: "name",
+                        type: "ordinal",
+                        axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false },
                     }
                 },
                 height: 300,
-                width: 800
+                width: data.values.length * 100
 
             };
-
-
+            
             vegaEmbed('#response', records);
         }
 
         const Http = new XMLHttpRequest();
         const url = 'http://localhost:5000/deaths';
-        Http.open("POST", url);
-        Http.send();
+        var cat = ['Hawaiian', 'M', 'Single'];
+        var num = [80, 5];
+        var params = "cat=" + cat + "&num=" + num + "&";
+        Http.open("POST", url, true);
+        Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        Http.send(params);
 
         Http.onreadystatechange = (e) => {
             var response = JSON.parse(Http.responseText);
-            console.log(response);
             makeUncertaintyChart(response);
         }
 
