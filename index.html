@@ -7,6 +7,49 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-lite"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@5"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.12.0/d3.min.js"></script>
+    <style>
+        .slidecontainer {
+            width: 40%;
+            margin-top: 20px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #5579a4;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #5579a4;
+            cursor: pointer;
+        }
+        select {
+            margin-right:20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +71,54 @@
         <div id="drugs"></div>
     </div>
 
+    
+    <label for="ethnicity">Ethnicity:</label>
+    <select id="ethnicity">
+        <option>Black</option>
+        <option>Chinese</option>
+        <option>Filipino</option>
+        <option>Gaumanian</option>
+        <option>Hawaiian</option>
+        <option>Indian</option>
+        <option>Japanese</option>
+        <option>Korean</option>
+        <option>Native American</option>
+        <option>Samoan</option>
+        <option>Vietnamese</option>
+        <option>White</option>
+        <option>other Asian or Pacific Islander</option>
+    </select>
 
+    <label for="gender">Gender:</label>
+    <select id="gender">
+        <option value='F'>Female</option>
+        <option value='M'>Male</option>
+    </select>
+    <label for="education">Education:</label>
+    <select id="education">
+        <option value=1>8th Grade or less</option>
+        <option value=2>9-12th Grade</option>
+        <option value=3>High School Graduate</option>
+        <option value=4>Some college credit, but no degree</option>
+        <option value=5>Associate's Degree</option>
+        <option value=6>Bachelor's Degree</option>
+        <option value=7>MAster's Degree</option>
+        <option value=8>Doctorate or professional degree</option>
+        <option value=9>Unknown</option>
+    </select>
+    <label for="mstatus">Marital Status:</label>
+    <select id="mstatus">
+        <option value='S'>Never Married/Single</option>
+        <option value='M'>Married</option>
+        <option value='W'>Widowed</option>
+        <option value='D'>Divorced</option>
+        <option value='U'>Unknown</option>
+    </select>
+    <div class="slidecontainer">
+        <span id="demo"></span>
+        <input type="range" min="1" max="100" value="50" class="slider" id="age">
+    </div>
+    <button onclick=apiCall()>Get Prediction</button>
     <div class="graph-box">
         <h3>Deaths Response</h3>
         <div id="response"></div>
@@ -81,8 +171,10 @@
             records.data.values = drugUseData;
             vegaEmbed('#drugs', records);
         }
+        d3.csv('./death_causes.csv')
+            .then(makeCharts);
 
-        makeUncertaintyChart = function(data){
+        makeUncertaintyChart = function (data) {
             var records = {
                 $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
                 data: {
@@ -95,38 +187,63 @@
                 encoding: {
                     y: {
                         field: "percentage",
-                        type: "quantitative"
+                        type: "quantitative",
                     },
                     x: {
                         field: "name",
                         type: "ordinal",
-                        axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false },
+                        sort: "-y",
+                        title: "Cause of Death",
+                        axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
                     }
                 },
                 height: 300,
                 width: data.values.length * 100
-
             };
-            
+
             vegaEmbed('#response', records);
         }
 
-        const Http = new XMLHttpRequest();
-        const url = 'http://localhost:5000/deaths';
-        var cat = ['Hawaiian', 'M', 'Single'];
-        var num = [80, 5];
-        var params = "cat=" + cat + "&num=" + num + "&";
-        Http.open("POST", url, true);
-        Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        Http.send(params);
+        var slider = document.getElementById("age");
+        var output = document.getElementById("demo");
+        output.innerHTML = 'Age: ' + slider.value;
 
-        Http.onreadystatechange = (e) => {
-            var response = JSON.parse(Http.responseText);
-            makeUncertaintyChart(response);
+
+
+        var apiCall = function () {
+
+            var age = slider.value;
+            var genderEle = document.getElementById('gender');
+            var gender = genderEle.options[genderEle.selectedIndex].value;
+            var ethnicityEle =  document.getElementById('ethnicity');
+            var ethnicity = ethnicityEle.options[ethnicityEle.selectedIndex].value;
+            var mEle = document.getElementById('mstatus');
+            var mstatus = mEle.options[mEle.selectedIndex].value;
+            var eduEle = document.getElementById('education');
+            var edu = eduEle.options[eduEle.selectedIndex].value;
+
+            
+
+            const Http = new XMLHttpRequest();
+            const url = 'http://localhost:5000/deaths';
+            var cat = [ethnicity, gender, mstatus, edu];
+            var num = [age];
+            var params = "cat=" + cat + "&num=" + num + "&";
+            Http.open("POST", url, true);
+            Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            Http.send(params);
+
+            Http.onreadystatechange = (e) => {
+                var response = JSON.parse(Http.responseText);
+                makeUncertaintyChart(response);
+            }
         }
 
-        d3.csv('death_causes.csv')
-            .then(makeCharts);
+        slider.oninput = function () {
+            output.innerHTML = 'Age: ' + this.value;
+        }
+
+        apiCall();
     </script>
 </body>
 

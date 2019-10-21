@@ -6,6 +6,7 @@ import sklearn
 import pandas
 from sklearn import preprocessing
 import json
+import operator
 
 
 
@@ -22,10 +23,8 @@ def deathCauses():
             columns = pickle.load(f)
         
         predict_data_cat = [request.form['cat'].split(',')]
-        #['Black', 'M', 'Single'], ['White', 'M', 'Widowed'], ['Hawaiian', 'F', 'Married']
-        #[20, 6], [72, 3], [36, 5]
         predict_data_num = [request.form['num'].split(',')]
-        features_num = ['age', 'education']
+        features_num = ['age']
 
 
         enc = preprocessing.OneHotEncoder()
@@ -33,8 +32,7 @@ def deathCauses():
         one_hot = enc.transform(predict_data_cat)
         X_cat_processed = pandas.DataFrame(one_hot.toarray(), columns=enc.get_feature_names())
         query = X_cat_processed.reindex(columns=columns, fill_value=0)
-        s = preprocessing.scale(predict_data_num)
-        s = pandas.DataFrame(s, columns=features_num)
+        s = pandas.DataFrame(predict_data_num, columns=features_num)
         query = pandas.concat([s, query], axis=1, sort=False)
 
         Y = model.predict(query)
