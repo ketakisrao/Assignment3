@@ -3,6 +3,7 @@ makeCharts = function (data) {
     var cancerData = data.filter(d => d.group == 'Cancer');
     var motorVehicleAccidentData = data.filter(d => d.group == 'Motor Vehicle Accident');
     var drugUseData = data.filter(d => d.group == 'Drug Use');
+    var heartDiseaseData = data.filter(d => d.group == 'Heart Disease');
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
         transform: [
@@ -37,6 +38,44 @@ makeCharts = function (data) {
 
     };
 
+    var customChart = {
+        $schema: "https://vega.github.io/schema/vega-lite/v4.json",
+        data: { values: data },
+        transform: [
+            { filter: "datum.group == 'Heart Disease' || datum.group == 'Cancer' || datum.group == 'Asthma' || datum.group == 'Drug Use'" },
+            {
+                bin: { step: 10 },
+                field: "age",
+                as: "Age",}
+        ],
+        mark: { type: "bar", tooltip: true },
+        encoding: {
+            column: {
+                field: "Age", type: "ordinal", spacing: 10
+            },
+            y: {
+                aggregate: "count", field: "age", type: "quantitative",
+                // "axis": { "title": "age", "grid": false }
+            },
+            x: {
+                field: "group", type: "nominal",
+                "axis": { "title": "" }
+            },
+            color: {
+                field: "group", type: "nominal",
+                scale: { range: ["#003f5c", "#58508d", "#bc5090", "#ff6361"] }
+            }
+        },
+        config: {
+            view: { "stroke": "transparent" },
+            axis: { "domainWidth": 1 }
+        }
+    }
+        ;
+
+
+
+
     vegaEmbed('#vis', records);
     records.data.values = cancerData;
     vegaEmbed('#cancer', records);
@@ -44,6 +83,11 @@ makeCharts = function (data) {
     vegaEmbed('#mva', records);
     records.data.values = drugUseData;
     vegaEmbed('#drugs', records);
+
+
+    vegaEmbed('#custom', customChart);
+
+
 }
 d3.csv('./death_causes.csv')
     .then(makeCharts);
