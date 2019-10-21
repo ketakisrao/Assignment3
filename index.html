@@ -64,10 +64,31 @@
     <div class="graph-box">
         <h3>1G: Overlay Chart</h3>
         <div id="custom"></div>
-        <p class="box">The chart above groups the four causes of deaths: 1) Heart Disease, 2) Cancer, 3) Drug Use, and 4) Motor Vehicle Accident.</p>
+        <p class="box">
+            Design Choices for the above chart:
+            <ul class="box">
+                <li>The chart above groups the four causes of deaths: 1) Heart Disease, 2) Cancer, 3) Drug Use, and
+                    4) Motor Vehicle Accident.</li>
+                <li>Each class is represented with its own color, denoted by the legend to the right,
+                    to make it easier for the user to map a particular color to a cause of death and quickly compare it
+                    with the
+                    adjacent bars without having to look at a label below or to the sides.</li>
+                <li>The bars are arranged in increasing
+                    order of age (bins). There are labels present just in case the user finds it hard to distiguish
+                    between two
+                    colors(maybe they're color blind).
+                </li>
+                <li>These bars are grouped together to represent one age bin and there is
+                    enough space between two groups for the user to be able to distinguish between two adjacent groups.
+                </li>
+            </ul>
+        </p>
     </div>
+    <hr>
 
-    <div>
+    <div class="interactive">
+        <p class="note">*Note: this application might not be inclusive of all ethnicities, ages, genders, etc or even
+            causes of death.</p>
         <label for="ethnicity">Ethnicity:</label>
         <select id="ethnicity">
             <option>Black</option>

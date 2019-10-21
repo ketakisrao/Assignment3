@@ -2,6 +2,10 @@
     width: 60%;
 }
 
+.interactive {
+    margin-top: 50px;
+}
+
 .slidecontainer {
     width: 40%;
     margin-top: 20px;
@@ -43,4 +47,8 @@
 
 select {
     margin-right: 20px;
+}
+
+.note{
+    font-size: 8px;
 }
