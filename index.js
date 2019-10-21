@@ -1,3 +1,158 @@
+var makeUncertaintyChart = function (data, id) {
+    var records = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+        data: {
+            values: data.values
+        },
+        mark: {
+            type: "bar",
+            tooltip: true
+        },
+        encoding: {
+            y: {
+                field: "percentage",
+                type: "quantitative",
+            },
+            x: {
+                field: "name",
+                type: "ordinal",
+                sort: "-y",
+                title: "Cause of Death",
+                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
+            }
+        },
+        height: 300,
+        width: data.values.length * 100
+    };
+
+    vegaEmbed(id, records);
+}
+
+var slider = document.getElementById("age");
+var output = document.getElementById("demo");
+output.innerHTML = 'Age: ' + slider.value;
+
+
+
+var apiCall = function (cat, num, id) {
+    const Http = new XMLHttpRequest();
+    const url = 'http://localhost:5000/deaths';
+
+    var params = "cat=" + cat + "&num=" + num + "&";
+    Http.open("POST", url, true);
+    Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    Http.send(params);
+
+    Http.onreadystatechange = (e) => {
+        var response = JSON.parse(Http.responseText);
+        makeUncertaintyChart(response, id);
+    }
+}
+var makeUncertaintyChart1 = function (data, id) {
+    var records = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+        data: {
+            values: data.values
+        },
+        mark: {
+            type: "bar",
+            tooltip: true
+        },
+        encoding: {
+            y: {
+                field: "percentage",
+                type: "quantitative",
+            },
+            x: {
+                field: "name",
+                type: "ordinal",
+                sort: "-y",
+                title: "Cause of Death",
+                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
+            }
+        },
+        height: 300,
+        width: data.values.length * 100
+    };
+
+    vegaEmbed(id, records);
+}
+var makeUncertaintyChart2 = function (data, id) {
+    var records = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+        data: {
+            values: data.values
+        },
+        mark: {
+            type: "bar",
+            tooltip: true
+        },
+        encoding: {
+            y: {
+                field: "percentage",
+                type: "quantitative",
+            },
+            x: {
+                field: "name",
+                type: "ordinal",
+                sort: "-y",
+                title: "Cause of Death",
+                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
+            }
+        },
+        height: 300,
+        width: data.values.length * 100
+    };
+
+    vegaEmbed(id, records);
+}
+var uncertainity = function (data, i, mainData) {
+    switch (i) {
+        case 0: makeUncertaintyChart(data, "#miles");
+            break;
+        case 1: makeUncertaintyChart1(data, "#jonas", mainData);
+            break;
+        case 2: makeUncertaintyChart2(data, "#alma");
+            break;
+    }
+}
+
+
+getPersonaPrediction = function (cat, num, i, mainData) {
+
+    const url = 'http://localhost:5000/deaths';
+
+
+    const Http = new XMLHttpRequest();
+    Http.open("POST", url, true);
+    Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    var params = "cat=" + cat + "&num=" + num + "&";
+    Http.send(params);
+
+    Http.onreadystatechange = (e) => {
+        var response = JSON.parse(Http.responseText);
+        uncertainity(response, i, mainData);
+    }
+}
+
+
+var getPrediction = function () {
+    var age = slider.value;
+    var genderEle = document.getElementById('gender');
+    var gender = genderEle.options[genderEle.selectedIndex].value;
+    var ethnicityEle = document.getElementById('ethnicity');
+    var ethnicity = ethnicityEle.options[ethnicityEle.selectedIndex].value;
+    var mEle = document.getElementById('mstatus');
+    var mstatus = mEle.options[mEle.selectedIndex].value;
+    var eduEle = document.getElementById('education');
+    var edu = eduEle.options[eduEle.selectedIndex].value;
+
+    var cat = [ethnicity, gender, mstatus, edu];
+    var num = [age];
+    apiCall(cat, num, "#response");
+}
+
+
 makeCharts = function (data) {
 
     var cancerData = data.filter(d => d.group == 'Cancer');
@@ -71,10 +226,6 @@ makeCharts = function (data) {
             axis: { "domainWidth": 1 }
         }
     }
-        ;
-
-
-
 
     vegaEmbed('#vis', records);
     records.data.values = cancerData;
@@ -83,82 +234,23 @@ makeCharts = function (data) {
     vegaEmbed('#mva', records);
     records.data.values = drugUseData;
     vegaEmbed('#drugs', records);
-
-
     vegaEmbed('#custom', customChart);
 
-
+    var categorical = [['Black', 'M', 'Single', 6], ['White', 'M', 'Widowed', 3], ['Hawaiian', 'F', 'Married', 5]];
+    var numeric = [[20], [72], [36]];
+    for (i = 0; i < categorical.length; i++) {
+        getPersonaPrediction(categorical[i], numeric[i], i, data);
+    }
 }
 d3.csv('./death_causes.csv')
     .then(makeCharts);
 
-makeUncertaintyChart = function (data) {
-    var records = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
-        data: {
-            values: data.values
-        },
-        mark: {
-            type: "bar",
-            tooltip: true
-        },
-        encoding: {
-            y: {
-                field: "percentage",
-                type: "quantitative",
-            },
-            x: {
-                field: "name",
-                type: "ordinal",
-                sort: "-y",
-                title: "Cause of Death",
-                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
-            }
-        },
-        height: 300,
-        width: data.values.length * 100
-    };
 
-    vegaEmbed('#response', records);
-}
-
-var slider = document.getElementById("age");
-var output = document.getElementById("demo");
-output.innerHTML = 'Age: ' + slider.value;
-
-
-
-var apiCall = function () {
-
-    var age = slider.value;
-    var genderEle = document.getElementById('gender');
-    var gender = genderEle.options[genderEle.selectedIndex].value;
-    var ethnicityEle = document.getElementById('ethnicity');
-    var ethnicity = ethnicityEle.options[ethnicityEle.selectedIndex].value;
-    var mEle = document.getElementById('mstatus');
-    var mstatus = mEle.options[mEle.selectedIndex].value;
-    var eduEle = document.getElementById('education');
-    var edu = eduEle.options[eduEle.selectedIndex].value;
-
-
-
-    const Http = new XMLHttpRequest();
-    const url = 'http://localhost:5000/deaths';
-    var cat = [ethnicity, gender, mstatus, edu];
-    var num = [age];
-    var params = "cat=" + cat + "&num=" + num + "&";
-    Http.open("POST", url, true);
-    Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    Http.send(params);
-
-    Http.onreadystatechange = (e) => {
-        var response = JSON.parse(Http.responseText);
-        makeUncertaintyChart(response);
-    }
-}
 
 slider.oninput = function () {
     output.innerHTML = 'Age: ' + this.value;
 }
 
-apiCall();
+getPrediction();
+
+

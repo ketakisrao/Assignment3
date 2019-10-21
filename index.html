@@ -86,7 +86,18 @@
     </div>
     <hr>
 
+    <h2>Part 2</h2>
+    <div>
+        <h3>2A: Design for Personas</h3>
+        <h4>Persona 1: Miles</h4>
+        <div id="miles"></div>
+        <h4>Persona 2: Jonas</h4>
+        <div id="jonas"></div>
+        <h4>Persona 3: Alma</h4>
+        <div id="alma"></div>
+    </div>
     <div class="interactive">
+        <h3>2D: Interactive Cause of death prediction</h3>
         <p class="note">*Note: this application might not be inclusive of all ethnicities, ages, genders, etc or even
             causes of death.</p>
         <label for="ethnicity">Ethnicity:</label>
@@ -119,7 +130,7 @@
             <option value=4>Some college credit, but no degree</option>
             <option value=5>Associate's Degree</option>
             <option value=6>Bachelor's Degree</option>
-            <option value=7>MAster's Degree</option>
+            <option value=7>Master's Degree</option>
             <option value=8>Doctorate or professional degree</option>
             <option value=9>Unknown</option>
         </select>
@@ -135,11 +146,37 @@
             <span id="demo"></span>
             <input type="range" min="1" max="100" value="50" class="slider" id="age">
         </div>
-        <button onclick=apiCall()>Get Prediction</button>
+        <button onclick=getPrediction()>Get Prediction</button>
     </div>
     <div class="graph-box">
         <h3>Deaths Prediction</h3>
         <div id="response"></div>
+    </div>
+
+    <div>
+        <h3>2E: Bin-ing of data</h3>
+        <p>
+            <ul>
+                <li><b>Age: </b>could be binned into Children(age &lt; 18), Adults(age &lt; 60) and Senior Citizens(age
+                    &gt; 60) to be able to better observe the trends in causes of death.</li>
+                <li><b>Sex: </b>can't be binned anymore since it's a small category. I would definitelt add more options
+                    to make the application more inclusive.</li>
+                <li><b>Race: </b>could be grouped by continents/broader race groups like American Indian, Asian, African
+                    American etc, and Asian could have several sub-categories like Chinese, Indian, Korean. This kind of
+                    indexing would make it a lot easier to search for a particular ethnicity</li>
+                <li><b>Education: </b> This field is already binned and cannot be binned further.</li>
+                <li><b>Month_of_death: </b>This field could be binned on the basis of seasons since the each season has
+                    distinct weather that could impact the cause of death.</li>
+                <li><b>Day_of_week_of_death: </b> Could be binned into weekday or weekend since most people work on
+                    weekdays and be at home on weekends which could corelate with accidental/non-accidental causes of
+                    death.</li>
+                <li><b>Relationship_status: </b>This field cannot be binned further.</li>
+                <li><b>Cause: </b>Could be binned into similar causes or similar group of disease.</li>
+                <li><b>Group: </b> Groups like 'Asthma', 'Respiratory Condition' and 'Issues breathing' could be binned
+                    into one common group 'Breathing Issues' (which is also easier to understand) for better
+                    understanding of the cause of death for users.</li>
+            </ul>
+        </p>
     </div>
     <script src="index.js"></script>
 </body>
