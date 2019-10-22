@@ -52,3 +52,7 @@ select {
 .note{
     font-size: 8px;
 }
+
+li {
+    margin-top: 10px;
+}

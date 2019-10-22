@@ -48,6 +48,38 @@ var apiCall = function (cat, num, id) {
         makeUncertaintyChart(response, id);
     }
 }
+var makeUncertaintyChart0 = function (data, id) {
+
+    milesData = data.values.filter(d => d.name != 'Pregnancy Related' && d.name != 'Female Reproductive Condition');
+    
+    var records = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
+        data: {
+            values: milesData
+        },
+        mark: {
+            type: "bar",
+            tooltip: true
+        },
+        encoding: {
+            y: {
+                field: "percentage",
+                type: "quantitative",
+            },
+            x: {
+                field: "name",
+                type: "ordinal",
+                sort: "-y",
+                title: "Cause of Death",
+                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
+            }
+        },
+        height: 300,
+        width: data.values.length * 100
+    };
+
+    vegaEmbed(id, records);
+}
 var makeUncertaintyChart1 = function (data, id, mainData) {
     var heartData = mainData.filter(d => d.group == 'Heart Disease' && d.race == 'White');
     // var jonasAge = 72;
@@ -140,7 +172,7 @@ var makeUncertaintyChart2 = function (data, id) {
 }
 var uncertainity = function (data, i, mainData) {
     switch (i) {
-        case 0: makeUncertaintyChart(data, "#miles");
+        case 0: makeUncertaintyChart0(data, "#miles");
             break;
         case 1: makeUncertaintyChart1(data, "#jonas", mainData);
             break;
