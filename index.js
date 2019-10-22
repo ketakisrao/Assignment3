@@ -1,4 +1,5 @@
 var makeUncertaintyChart = function (data, id) {
+    document.getElementById('icause').innerHTML = "<b>Category of Cause of Death: </b> " + data.cause_of_death;
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
         data: {
@@ -50,6 +51,7 @@ var apiCall = function (cat, num, id) {
     }
 }
 var makeUncertaintyChart0 = function (data, id) {
+    document.getElementById('cause').innerHTML = "<b>Category of Cause of Death: </b> " + data.cause_of_death;
 
     milesData = data.values.filter(d => d.name != 'Pregnancy Related' && d.name != 'Female Reproductive Condition');
 
