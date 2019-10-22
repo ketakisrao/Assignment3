@@ -115,7 +115,7 @@
         <p id="alma" class="box" style="text-align: center; border: 1px solid blueviolet; padding: 20px 0;"></p>
         <p class="box">Since text is also a form of visualization(simple yet very effective) and the prediction for Alma
             contains
-            only one category (cancer), I chose to keep the visualization for her very simple. The only information she
+            only one category (cancer), I chose to keep the visualization very simple for her. The only information she
             would need to know out of this would be her likely cause of death, which is denoted clearly from the visual
             above.</p>
     </div>
@@ -134,14 +134,33 @@
 
     <div>
         <h3>2C: Good & Bad questions for 2A</h3>
-        <p class="box"></p>
+        <p class="box">
+            Good Questions:
+        </p>
+        <ul class="box">
+            <li>Given my age, gender, education, ethnicity and marital status, what is my likely cause of death?</li>
+            <li>What are the sub categories under my likely cause of death?</li>
+            <li>What is the confidence with which this application can predict my likely cause of death?</li>
+            <li>What did the algorithm base it's predictions on?</li>
+        </ul>
+
+        <p class="box">
+            Bad Questions:
+            <ul class="box">
+                <li>Why did the algorithm predict what it predicted?</li>
+                <li>Why did it chose one cause of death over another?</li>
+                <li>Why did it not chose a particular cause of death?</li>
+            </ul>
+        </p>
+
     </div>
     <hr>
 
     <div class="interactive">
         <h3>2D: Interactive Cause of death prediction</h3>
         <p class="note">*Note: this application might not be inclusive of all ethnicities, ages, genders, etc or even
-            causes of death.</p>
+            causes of death. It bases it's predictions off of the data given by CDC (Center for Disease Control and
+            Prevention) which is a federal public health and safety agency of the United States.</p>
         <label for="ethnicity">Ethnicity:</label>
         <select id="ethnicity">
             <option>Black</option>
@@ -221,7 +240,8 @@
                 application might not be fully inclusive of all types of genders, ethnicities etc..
             </li>
             <li>
-                <b>Demographic Data: </b> Demographic data, like Ethnicity, might be a bit sensitive to ask for and there is a
+                <b>Demographic Data: </b> Demographic data, like Ethnicity, might be a bit sensitive to ask for and
+                there is a
                 possibility that it could be taken from services like google analytics, but there is a trade off of
                 trust between the user and the algorithm here.
             </li>
