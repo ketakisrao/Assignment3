@@ -12,7 +12,8 @@ To run this application:
 3. Open [Assignment3](https://ketakisrao.github.io/Assignment3/) in browser.
 (Alternatively you could also set it up on localhost (with apache/nginx))
 
-__Note:__ There is no server hosted online and the application will not work if you don't run flask, even for the one on git pages.
+**Note:** There is no server hosted online and the application will not work if you don't run flask, even for the one on git pages.
+
 ---
 
 ## Files:
