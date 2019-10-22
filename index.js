@@ -48,31 +48,63 @@ var apiCall = function (cat, num, id) {
         makeUncertaintyChart(response, id);
     }
 }
-var makeUncertaintyChart1 = function (data, id) {
+var makeUncertaintyChart1 = function (data, id, mainData) {
+    var heartData = mainData.filter(d => d.group == 'Heart Disease' && d.race == 'White');
+    // var jonasAge = 72;
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
-        data: {
-            values: data.values
-        },
-        mark: {
-            type: "bar",
-            tooltip: true
-        },
-        encoding: {
-            y: {
-                field: "percentage",
-                type: "quantitative",
+        transform: [
+            {
+                bin: { step: 5 },
+                field: "age",
+                as: "Age"
             },
-            x: {
-                field: "name",
-                type: "ordinal",
-                sort: "-y",
-                title: "Cause of Death",
-                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
+            {
+                calculate: '72', as: 'jonasAge'
             }
+
+        ],
+        data: {
+            values: heartData
         },
+        layer: [{
+            mark: {
+                type: "bar",
+                tooltip: true
+            },
+            encoding: {
+                x: {
+                    bin: { binned: true, step: 5 },
+                    field: "Age",
+                    type: "quantitative",
+                    title: "Age"
+                },
+                x2: { field: "Age_end" },
+                y: {
+                    aggregate: "count",
+                    type: "quantitative"
+                }
+            },
+        },
+        {
+            mark: {
+                type: "rule",
+                tooltip: true
+            },
+            encoding: {
+                x: {
+                    field: "jonasAge",
+                    type: "quantitative",
+                    title: "Jonas Age"
+                },
+                size: {value: 2},
+                color: {value: "red"}
+            }
+        }
+        ],
         height: 300,
-        width: data.values.length * 100
+        width: 800
+
     };
 
     vegaEmbed(id, records);
@@ -121,8 +153,6 @@ var uncertainity = function (data, i, mainData) {
 getPersonaPrediction = function (cat, num, i, mainData) {
 
     const url = 'http://localhost:5000/deaths';
-
-
     const Http = new XMLHttpRequest();
     Http.open("POST", url, true);
     Http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -158,7 +188,6 @@ makeCharts = function (data) {
     var cancerData = data.filter(d => d.group == 'Cancer');
     var motorVehicleAccidentData = data.filter(d => d.group == 'Motor Vehicle Accident');
     var drugUseData = data.filter(d => d.group == 'Drug Use');
-    var heartDiseaseData = data.filter(d => d.group == 'Heart Disease');
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
         transform: [
