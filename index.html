@@ -16,10 +16,12 @@
         <h3>1A: All Deaths by age</h3>
         <div id="vis"></div>
     </div>
+    <hr>
     <div class="graph-box">
         <h3>1B: Deaths by Cancer by age</h3>
         <div id="cancer"></div>
     </div>
+    <hr>
     <div class="box">
         <h3>1C: Guess Deaths by Motor Vehicle by age</h3>
         <p>For deaths by Motor Vehicle Accident, I think the number of deaths for teenagers
@@ -39,6 +41,7 @@
             anticipate
             the increase in number of teen accidents.</p>
     </div>
+    <hr>
     <div class="box">
         <h3>1D: Guess Deaths by Drug Use</h3>
         <p>For deaths by Drug Use, I think the number of deaths for early twenties to the age of 40 should be pretty
@@ -61,6 +64,7 @@
             figure out the assumptions I make/have about the topic(causes of deaths in this case). Data might not always
             support what you think and there is always more to learn from it. </p>
     </div>
+    <hr>
     <div class="graph-box">
         <h3>1G: Overlay Chart</h3>
         <div id="custom"></div>
@@ -91,21 +95,47 @@
         <h3>2A: Design for Personas</h3>
         <h4>Persona 1: Miles</h4>
         <div id="miles"></div>
+        <p class="box">
+            The above chart is a bar chart showing the various causes of death under the broader category of cause of
+            death predicted for Miles and how likely are each of the sub groups. Since Miles is young he has many more
+            outcomes/possibilities which are easily represented by this bar chart.
+        </p>
+        <hr>
         <h4>Persona 2: Jonas</h4>
         <div id="jonas"></div>
+        <p class="box">
+            The above chart shows the data that is filtered for race, gender and likely cause of death that fit Jonas's
+            persona. There is also a red mark(rule) which denotes Jonas's current standing in this chart (basically his
+            age). I think this would be a lot more easy for him to understand because a Histogram is a traditional chart
+            and also the red mark is pretty conspicuous and hard to miss.
+        </p>
+        <hr>
         <h4>Persona 3: Alma</h4>
-        <div id="alma"></div>
+        <p id="alma" class="box" style="text-align: center; border: 1px solid blueviolet; padding: 20px 0;"></p>
+        <p class="box">Since text is also a form of visualization(simple yet very effective) and the prediction for Alma
+            contains
+            only one category (cancer), I chose to keep the visualization for her very simple. The only information she
+            would need to know out of this would be her likely cause of death, which is denoted clearly from the visual
+            above.</p>
     </div>
+    <hr>
 
     <div>
         <h3>2B: Successful Visualization from 2A</h3>
-        <p class="box"></p>
+        <p class="box">
+            According to me, the most successful visualization from part 2A is the one for Miles. It perfectly shows the
+            confidence levels of the cause of death prediction algorithm. The user (Miles) has a fair idea of his likely
+            cause of death but also knows that the algorithm is only about 30% confident about it. Visualizing this
+            uncertainity would help the algorithm gain the user's trust.
+        </p>
     </div>
-    
+    <hr>
+
     <div>
         <h3>2C: Good & Bad questions for 2A</h3>
         <p class="box"></p>
     </div>
+    <hr>
 
     <div class="interactive">
         <h3>2D: Interactive Cause of death prediction</h3>
@@ -163,6 +193,39 @@
         <h3>Deaths Prediction</h3>
         <div id="response"></div>
     </div>
+    <p class="box">
+        Above is an interactive version of the data that can be input into this application which predicts the likely
+        cause of death for the user. The application asks for demographic data such as Age, Gender, Education and Race,
+        and personal data such as Marital Status.
+        <ul class="box">
+            <li><b>Age: </b> As observed, from the charts in part 1, age influences the cause of death to a great extent
+                which makes it an important factor to include for prediction.
+            </li>
+            <li>
+                <b>Gender: </b> Another factor which influences this prediction algorithm is the gender of that person,
+                and therefore is a necessary input.
+            </li>
+            <li>
+                <b>Education & Marital Status: </b> These were two hidden factors which don't immediately come to mind
+                when one is predicting their likely cause of death but the algorithm performs a lot better if it knows
+                these two categories as well.
+            </li>
+            <li>
+                <b>Axis Labels: </b> Note that the labels of the chart clearly denote what is represented by each one of
+                the axes.
+            </li>
+            <li>
+                <b>Fineprint: </b> There is a note on the top left corner of this application which states that this
+                application might not be fully inclusive of all types of genders, ethnicities etc..
+            </li>
+            <li>
+                <b>Demographic Data: </b> Demographic data, like Ethnicity, might be a bit sensitive to ask for and there is a
+                possibility that it could be taken from services like google analytics, but there is a trade off of
+                trust between the user and the algorithm here.
+            </li>
+        </ul>
+    </p>
+    <hr>
 
     <div>
         <h3>2E: Bin-ing of data</h3>

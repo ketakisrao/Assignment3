@@ -12,6 +12,7 @@ var makeUncertaintyChart = function (data, id) {
             y: {
                 field: "percentage",
                 type: "quantitative",
+                title: "% Likelihood"
             },
             x: {
                 field: "name",
@@ -51,7 +52,7 @@ var apiCall = function (cat, num, id) {
 var makeUncertaintyChart0 = function (data, id) {
 
     milesData = data.values.filter(d => d.name != 'Pregnancy Related' && d.name != 'Female Reproductive Condition');
-    
+
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
         data: {
@@ -81,7 +82,7 @@ var makeUncertaintyChart0 = function (data, id) {
     vegaEmbed(id, records);
 }
 var makeUncertaintyChart1 = function (data, id, mainData) {
-    var heartData = mainData.filter(d => d.group == 'Heart Disease' && d.race == 'White');
+    var heartData = mainData.filter(d => d.group == 'Heart Disease' && d.race == 'White' && d.sex == 'M');
     // var jonasAge = 72;
     var records = {
         $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
@@ -129,8 +130,8 @@ var makeUncertaintyChart1 = function (data, id, mainData) {
                     type: "quantitative",
                     title: "Jonas Age"
                 },
-                size: {value: 2},
-                color: {value: "red"}
+                size: { value: 2 },
+                color: { value: "red" }
             }
         }
         ],
@@ -142,33 +143,10 @@ var makeUncertaintyChart1 = function (data, id, mainData) {
     vegaEmbed(id, records);
 }
 var makeUncertaintyChart2 = function (data, id) {
-    var records = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v4.0.0-beta.10.json',
-        data: {
-            values: data.values
-        },
-        mark: {
-            type: "bar",
-            tooltip: true
-        },
-        encoding: {
-            y: {
-                field: "percentage",
-                type: "quantitative",
-            },
-            x: {
-                field: "name",
-                type: "ordinal",
-                sort: "-y",
-                title: "Cause of Death",
-                axis: { labelAngle: 0, labelFontSize: 8, labelOverlap: false }
-            }
-        },
-        height: 300,
-        width: data.values.length * 100
-    };
 
-    vegaEmbed(id, records);
+    var html = '<b>Most likely cause of death: </b> ' + data.values[0].name;
+
+    document.getElementById(id).innerHTML = html;
 }
 var uncertainity = function (data, i, mainData) {
     switch (i) {
@@ -176,7 +154,7 @@ var uncertainity = function (data, i, mainData) {
             break;
         case 1: makeUncertaintyChart1(data, "#jonas", mainData);
             break;
-        case 2: makeUncertaintyChart2(data, "#alma");
+        case 2: makeUncertaintyChart2(data, "alma");
             break;
     }
 }
@@ -262,7 +240,8 @@ makeCharts = function (data) {
             {
                 bin: { step: 10 },
                 field: "age",
-                as: "Age",}
+                as: "Age",
+            }
         ],
         mark: { type: "bar", tooltip: true },
         encoding: {
