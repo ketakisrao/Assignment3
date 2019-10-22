@@ -7,6 +7,7 @@ This application is based on Flask and HTML JS.
 To run this application:
 1. Install flask using
 `pip install Flask`
+`pip install Flask-API`
 2. Run application using
 `python ./API.py`
 3. Open [Assignment3](https://ketakisrao.github.io/Assignment3/) in browser.
